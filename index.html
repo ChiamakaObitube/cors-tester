@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Test Cors</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+</head>
+<body>
+    <h2>TEST CORS CONNECTIONS</h2>
+    
+    <form action="GET" id="testCORSFORM">
+        <label for="">URL</label>
+        <input type="text" name="url" id="url" required>
+        <select name="method" id="method" required>
+            <option disabled selected>Select request type</option>
+            <option value="GET">GET</option>
+            <option value="POST">POST</option>
+        </select>
+        <button type="submit">TEST!</button>
+    </form>
+    
+    <hr>
+
+    <h5>CORS TEST RESULT:</h5>
+    <div id="testResult"></div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $('#testCORSFORM').on('submit', function(e) {
+            e.preventDefault();
+
+            // var that = $(this), url = that.attr('action'), type = that.attr('method');
+            var url = $("#url").val();
+            var method = $("#method").val();
+            fetch(url, {
+                method: method,
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            }).then( function (res, url, method) {
+                $("#testResult").empty()
+                $("#testResult").append("<table class='table table-stripped'><tbody><tr><td>STATUS CODE</td><td>"+ res.status +"</td></tr><tr><td>STATUS MESSAGE</td><td>" + res.statusText +"</td></tr><tr><td>TYPE</td><td>" + res.type +"</td></tr><tr><td>REQUEST URL</td><td>" + res.url +"</td><tr><td>REQUEST METHOD </td><td>" + method +"</td></tr></tr></tbody></table>")
+            }).catch( function(error) {
+                $("#testResult").empty()
+                $("#testResult").append("<table class='table'><tbody><tr><td>STATUS MESSAGE</td><td>" + error + "</td></tr></tbody></table>")                
+            })
+        });
+    </script>
+</body>
+</html>
